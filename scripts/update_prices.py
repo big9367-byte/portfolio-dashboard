@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """index.html의 DEFAULT_DATA 보유종목 평가금액을 최신 시세로 갱신한다.
 
-야후 파이낸스 시세를 사용한다. 미국 종목은 USD/KRW 환율을 곱해 원화로
-환산하고, KRX 종목은 야후의 .KS 접미사 심볼로 조회한다. 조회에 실패한
+미국 종목과 USD/KRW 환율은 야후 파이낸스, 국내(KRX) 종목은 네이버 증권
+API를 사용한다. 야후의 KRX 데이터는 지연되거나 부정확한 경우가 있어
+국내 종목에는 쓰지 않는다(실패 시에만 야후 .KS로 폴백). 조회에 실패한
 종목은 기존 값을 유지한다.
 """
 
@@ -40,8 +41,24 @@ def fetch_price(symbol):
     return float(price)
 
 
-def yahoo_symbol(symbol, exchange):
-    return f"{symbol}.KS" if exchange == "XKRX" else symbol
+def fetch_krx_price(code):
+    url = f"https://m.stock.naver.com/api/stock/{urllib.parse.quote(code)}/basic"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=20) as resp:
+        data = json.load(resp)
+    price = float(str(data.get("closePrice", "0")).replace(",", ""))
+    if price <= 0:
+        raise ValueError(f"{code}: no closePrice in response")
+    return price
+
+
+def fetch_holding_price(symbol, exchange):
+    if exchange == "XKRX":
+        try:
+            return fetch_krx_price(symbol)
+        except Exception:
+            return fetch_price(f"{symbol}.KS")
+    return fetch_price(symbol)
 
 
 def main():
@@ -61,7 +78,7 @@ def main():
         if d["exchange"] not in ("US", "XKRX") or not d["symbol"]:
             return match.group(0)
         try:
-            price = fetch_price(yahoo_symbol(d["symbol"], d["exchange"]))
+            price = fetch_holding_price(d["symbol"], d["exchange"])
         except Exception as e:
             skipped.append(f"{d['name']}({d['symbol']}): {e}")
             return match.group(0)
