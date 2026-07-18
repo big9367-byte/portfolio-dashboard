@@ -1,0 +1,33 @@
+name: Update prices
+
+on:
+  schedule:
+    # 16:10 KST 평일 — KRX 마감(15:30 KST) 이후
+    - cron: '10 7 * * 1-5'
+    # 06:40 KST 화-토 — 미국 증시 마감 이후
+    - cron: '40 21 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update prices in index.html
+        run: python3 scripts/update_prices.py
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet; then
+            echo "변경 없음"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: 주가 자동 업데이트 ($(TZ=Asia/Seoul date +%Y-%m-%d))"
+          git push
