@@ -1044,13 +1044,16 @@
       const base = clone(DEFAULT_DATA);
       const metadataById = new Map(base.holdings.map(h => [h.id, h]));
       const metadataByName = new Map(base.holdings.map(h => [h.name, h]));
+      // 파일의 기준일이 저장 데이터보다 최신이면(주가 자동 커밋 등)
+      // 평가금액은 파일 값을 우선한다. 사용자가 추가·수정한 다른 필드는 유지.
+      const baseFresher = String(base.asOfDate || "") > String(raw?.asOfDate || "");
       const migrated = {
         ...base,
         ...raw,
         marketSettings: { ...base.marketSettings, ...(raw?.marketSettings || {}) },
         holdings: Array.isArray(raw?.holdings) ? raw.holdings.map(h => {
           const meta = metadataById.get(h.id) || metadataByName.get(h.name) || {};
-          return {
+          const merged = {
             symbol: "",
             exchange: "MANUAL",
             currency: "KRW",
@@ -1061,8 +1064,11 @@
             ...meta,
             ...h
           };
+          if (baseFresher && meta.id) merged.value = meta.value;
+          return merged;
         }) : base.holdings
       };
+      if (baseFresher) migrated.asOfDate = base.asOfDate;
       return migrated;
     }
 
