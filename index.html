@@ -265,6 +265,19 @@
       font-size: 12px;
     }
 
+    .donut-heading {
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .donut-divider {
+      height: 1px;
+      margin: 24px 0;
+      background: var(--line);
+    }
+
     .legend {
       display: grid;
       gap: 10px;
@@ -742,18 +755,34 @@
         <div class="card-head">
           <div>
             <h2 class="card-title">섹터 비중</h2>
-            <p class="card-note">순매입금액 기준</p>
+            <p class="card-note">순매입금액 · 평가금액 기준</p>
           </div>
         </div>
         <div class="card-body">
-          <div class="donut-wrap">
-            <div class="donut" id="donut">
-              <div class="donut-center">
-                <strong id="donutTotal">0원</strong>
-                <span>총 순매입</span>
+          <div class="donut-block">
+            <p class="donut-heading">순매입금액 기준</p>
+            <div class="donut-wrap">
+              <div class="donut" id="donut">
+                <div class="donut-center">
+                  <strong id="donutTotal">0원</strong>
+                  <span>총 순매입</span>
+                </div>
               </div>
+              <div class="legend" id="legend"></div>
             </div>
-            <div class="legend" id="legend"></div>
+          </div>
+          <div class="donut-divider"></div>
+          <div class="donut-block">
+            <p class="donut-heading">평가금액 기준</p>
+            <div class="donut-wrap">
+              <div class="donut" id="donutValue">
+                <div class="donut-center">
+                  <strong id="donutTotalValue">0원</strong>
+                  <span>총 평가</span>
+                </div>
+              </div>
+              <div class="legend" id="legendValue"></div>
+            </div>
           </div>
         </div>
       </article>
@@ -1198,26 +1227,36 @@
       `;
     }
 
-    function renderDonut() {
-      const sectors = sectorSummary(viewHoldings());
-      const totalCost = sectors.reduce((s, x) => s + x.cost, 0);
+    function renderDonutInto(donutEl, legendEl, totalEl, sectors, metric) {
+      // sectors는 순매입금액 기준으로 정렬돼 있어, 두 도넛에서 같은 섹터가
+      // 같은 색·같은 범례 순서를 갖도록 인덱스 기반 색상을 공유한다.
+      const total = sectors.reduce((s, x) => s + Number(x[metric] || 0), 0);
       let cursor = 0;
       const gradients = sectors.map((item, index) => {
+        const weight = total ? Number(item[metric] || 0) / total * 100 : 0;
         const start = cursor;
-        cursor += item.weight;
+        cursor += weight;
         return `${COLORS[index % COLORS.length]} ${start}% ${cursor}%`;
       });
-      $("#donut").style.background = sectors.length
+      donutEl.style.background = sectors.length && total
         ? `conic-gradient(${gradients.join(",")})`
         : "conic-gradient(#dce3ef 0 100%)";
-      $("#donutTotal").textContent = compactWon(totalCost);
-      $("#legend").innerHTML = sectors.map((item, index) => `
+      totalEl.textContent = compactWon(total);
+      legendEl.innerHTML = sectors.map((item, index) => {
+        const weight = total ? Number(item[metric] || 0) / total * 100 : 0;
+        return `
         <div class="legend-row">
           <span class="legend-dot" style="background:${COLORS[index % COLORS.length]}"></span>
           <span class="legend-label" title="${escapeHtml(item.sector)}">${escapeHtml(item.sector)}</span>
-          <span class="legend-value"><strong>${pct(item.weight)}</strong><span>${won(item.cost)}</span></span>
-        </div>
-      `).join("") || `<div class="empty">표시할 데이터가 없습니다.</div>`;
+          <span class="legend-value"><strong>${pct(weight)}</strong><span>${won(item[metric])}</span></span>
+        </div>`;
+      }).join("") || `<div class="empty">표시할 데이터가 없습니다.</div>`;
+    }
+
+    function renderDonut() {
+      const sectors = sectorSummary(viewHoldings());
+      renderDonutInto($("#donut"), $("#legend"), $("#donutTotal"), sectors, "cost");
+      renderDonutInto($("#donutValue"), $("#legendValue"), $("#donutTotalValue"), sectors, "value");
     }
 
     function renderAccountBars() {
