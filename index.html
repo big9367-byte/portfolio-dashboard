@@ -1022,7 +1022,7 @@
 
     const DEFAULT_DATA = {
       title: "투자 포트폴리오 대시보드",
-      asOfDate: "2026-07-20",
+      asOfDate: "2026-07-21",
       marketSettings: {
         autoRefresh: false,
         intervalMinutes: 30,
@@ -1031,22 +1031,22 @@
         lastFxRate: null
       },
       holdings: [
-        { id: "t1", account: "toss", name: "아이렌", sector: "AI 데이터센터·컴퓨팅 인프라", cost: 51474419, value: 40559348, symbol: "IREN", exchange: "US", currency: "USD", quantity: 750, autoUpdate: true },
-        { id: "t2", account: "toss", name: "로켓랩", sector: "우주·항공", cost: 17695450, value: 20206334, symbol: "RKLB", exchange: "US", currency: "USD", quantity: 200, autoUpdate: true },
-        { id: "t3", account: "toss", name: "DRAM", sector: "반도체·메모리", cost: 27011059, value: 20485604, symbol: "DRAM", exchange: "US", currency: "USD", quantity: 254, autoUpdate: true },
-        { id: "t4", account: "toss", name: "인플렉션", sector: "양자컴퓨팅", cost: 11005245, value: 6629286, symbol: "INFQ", exchange: "US", currency: "USD", quantity: 489, autoUpdate: true },
-        { id: "t5", account: "toss", name: "마벨 테크놀로지", sector: "반도체·메모리", cost: 9098590, value: 6602810, symbol: "MRVL", exchange: "US", currency: "USD", quantity: 23, autoUpdate: true },
-        { id: "t6", account: "toss", name: "아이온큐", sector: "양자컴퓨팅", cost: 4080782, value: 2571107, symbol: "IONQ", exchange: "US", currency: "USD", quantity: 49, autoUpdate: true },
-        { id: "t7", account: "toss", name: "써클 인터넷 그룹", sector: "핀테크·스테이블코인", cost: 1836298, value: 1444402, symbol: "CRCL", exchange: "US", currency: "USD", quantity: 16, autoUpdate: true },
-        { id: "t8", account: "toss", name: "SK하이닉스", sector: "반도체·메모리", cost: 4152000, value: 3528000, symbol: "000660", exchange: "XKRX", currency: "KRW", quantity: 2, autoUpdate: true },
-        { id: "t9", account: "toss", name: "삼성전자", sector: "반도체·메모리", cost: 2910000, value: 2440000, symbol: "005930", exchange: "XKRX", currency: "KRW", quantity: 10, autoUpdate: true },
+        { id: "t1", account: "toss", name: "아이렌", sector: "AI 데이터센터·컴퓨팅 인프라", cost: 51474419, value: 44416377, symbol: "IREN", exchange: "US", currency: "USD", quantity: 750, autoUpdate: true },
+        { id: "t2", account: "toss", name: "로켓랩", sector: "우주·항공", cost: 17695450, value: 19369371, symbol: "RKLB", exchange: "US", currency: "USD", quantity: 200, autoUpdate: true },
+        { id: "t3", account: "toss", name: "DRAM", sector: "반도체·메모리", cost: 27011059, value: 19854400, symbol: "DRAM", exchange: "US", currency: "USD", quantity: 254, autoUpdate: true },
+        { id: "t4", account: "toss", name: "인플렉션", sector: "양자컴퓨팅", cost: 11005245, value: 6519484, symbol: "INFQ", exchange: "US", currency: "USD", quantity: 489, autoUpdate: true },
+        { id: "t5", account: "toss", name: "마벨 테크놀로지", sector: "반도체·메모리", cost: 9098590, value: 6605179, symbol: "MRVL", exchange: "US", currency: "USD", quantity: 23, autoUpdate: true },
+        { id: "t6", account: "toss", name: "아이온큐", sector: "양자컴퓨팅", cost: 4080782, value: 2471642, symbol: "IONQ", exchange: "US", currency: "USD", quantity: 49, autoUpdate: true },
+        { id: "t7", account: "toss", name: "써클 인터넷 그룹", sector: "핀테크·스테이블코인", cost: 1836298, value: 1542714, symbol: "CRCL", exchange: "US", currency: "USD", quantity: 16, autoUpdate: true },
+        { id: "t8", account: "toss", name: "SK하이닉스", sector: "반도체·메모리", cost: 4152000, value: 3672000, symbol: "000660", exchange: "XKRX", currency: "KRW", quantity: 2, autoUpdate: true },
+        { id: "t9", account: "toss", name: "삼성전자", sector: "반도체·메모리", cost: 2910000, value: 2590000, symbol: "005930", exchange: "XKRX", currency: "KRW", quantity: 10, autoUpdate: true },
 
-        { id: "p1", account: "pension", name: "TIGER 미국AI데이터센터TOP4Plus", sector: "AI 데이터센터·컴퓨팅 인프라", cost: 4893048, value: 4832145, symbol: "0142D0", exchange: "XKRX", currency: "KRW", quantity: 501, autoUpdate: true },
-        { id: "p2", account: "pension", name: "TIGER 미국나스닥100채권혼합50", sector: "나스닥100·채권 혼합", cost: 10311355, value: 10854560, symbol: "435420", exchange: "XKRX", currency: "KRW", quantity: 758, autoUpdate: true },
-        { id: "p3", account: "pension", name: "PLUS 글로벌HBM반도체", sector: "반도체·메모리", cost: 9932650, value: 6991600, symbol: "442580", exchange: "XKRX", currency: "KRW", quantity: 70, autoUpdate: true },
-        { id: "p4", account: "pension", name: "TIME 글로벌AI인공지능액티브", sector: "AI 테마·응용", cost: 3072825, value: 4362750, symbol: "456600", exchange: "XKRX", currency: "KRW", quantity: 75, autoUpdate: true },
-        { id: "p5", account: "pension", name: "TIGER 글로벌온디바이스AI", sector: "AI 테마·응용", cost: 2810104, value: 4074340, symbol: "480310", exchange: "XKRX", currency: "KRW", quantity: 202, autoUpdate: true },
-        { id: "p6", account: "pension", name: "TIGER 미국필라델피아AI반도체나스닥", sector: "반도체·메모리", cost: 3507920, value: 4612440, symbol: "497570", exchange: "XKRX", currency: "KRW", quantity: 204, autoUpdate: true }
+        { id: "p1", account: "pension", name: "TIGER 미국AI데이터센터TOP4Plus", sector: "AI 데이터센터·컴퓨팅 인프라", cost: 4893048, value: 5207895, symbol: "0142D0", exchange: "XKRX", currency: "KRW", quantity: 501, autoUpdate: true },
+        { id: "p2", account: "pension", name: "TIGER 미국나스닥100채권혼합50", sector: "나스닥100·채권 혼합", cost: 10311355, value: 10873510, symbol: "435420", exchange: "XKRX", currency: "KRW", quantity: 758, autoUpdate: true },
+        { id: "p3", account: "pension", name: "PLUS 글로벌HBM반도체", sector: "반도체·메모리", cost: 9932650, value: 7414400, symbol: "442580", exchange: "XKRX", currency: "KRW", quantity: 70, autoUpdate: true },
+        { id: "p4", account: "pension", name: "TIME 글로벌AI인공지능액티브", sector: "AI 테마·응용", cost: 3072825, value: 4566750, symbol: "456600", exchange: "XKRX", currency: "KRW", quantity: 75, autoUpdate: true },
+        { id: "p5", account: "pension", name: "TIGER 글로벌온디바이스AI", sector: "AI 테마·응용", cost: 2810104, value: 4210690, symbol: "480310", exchange: "XKRX", currency: "KRW", quantity: 202, autoUpdate: true },
+        { id: "p6", account: "pension", name: "TIGER 미국필라델피아AI반도체나스닥", sector: "반도체·메모리", cost: 3507920, value: 4753200, symbol: "497570", exchange: "XKRX", currency: "KRW", quantity: 204, autoUpdate: true }
       ]
     };
 
